@@ -10,9 +10,8 @@
 import { defineProps } from 'vue'
 
 const props = defineProps({
-info: Object,
+    info: Object,
     num: Number
-
 })
 
 
