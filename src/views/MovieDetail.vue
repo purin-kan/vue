@@ -29,7 +29,7 @@
 
 <script setup>
 import { useRoute } from 'vue-router';
-import { ref, onBeforeMount, onMounted } from 'vue'
+import { ref, onBeforeMount } from 'vue'
 import axios from 'axios';
 import MovieVideos from '../components/Exercise-06/MovieVideos.vue';
 const route = useRoute();

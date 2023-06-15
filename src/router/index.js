@@ -58,6 +58,11 @@ const router = createRouter({
     path: '/moviedetail/:id',
     name: 'MovieDetail',
     component: () => import('../views/MovieDetail.vue')
+    },
+    {
+    path: '/exercise-07',
+    name: 'exercise-07',
+    component: () => import('../views/Exercise-07.vue')
     }
   ]
 })

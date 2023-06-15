@@ -14,6 +14,7 @@ import HelloWorld from './components/HelloWorld.vue'
     <RouterLink to="/Exercise-04">Exercise-04</RouterLink>
     <RouterLink to="/Exercise-05">Exercise-05</RouterLink>
     <RouterLink to="/api">api</RouterLink>
+    <RouterLink to="/Exercise-07">Exercise-07</RouterLink>
   </nav>
 
   <RouterView />
