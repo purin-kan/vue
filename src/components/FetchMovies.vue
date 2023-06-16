@@ -72,7 +72,6 @@ const fetch = () => {
             })
         page++
     } else(search())
-
 }
 
 // Async/Await Example
@@ -93,24 +92,10 @@ const props = defineProps({
     page: Number
 })
 
-
-const search = () => {
-    const url = `https://api.themoviedb.org/3/search/movie?query=${searchTerm.value}&api_key=7c13e8a9302bd189c9017bb61e799251&page=${page}`
-    axios.get(url)
-        .then((response) => {
-            movieData.value = response.data
-            movies.value = movies.value.concat(response.data.results)
-        })
-    page++
-    SearchPressed = true
-}
-const searchTerm = ref('')
-let SearchPressed = false
+const searchTerm = ref()
 const searchMovie = () => {
-    if (!!searchTerm.value) {
-        movies.value = []
-        page = 1
-        search()
-    }
+
 }
+
+
 </script>
