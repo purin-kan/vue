@@ -71,7 +71,7 @@ const fetch = () => {
                 movies.value = movies.value.concat(response.data.results)
             })
         page++
-    } else (search())
+    } else(search())
 
 }
 
