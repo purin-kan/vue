@@ -63,6 +63,11 @@ const router = createRouter({
     path: '/exercise-07',
     name: 'exercise-07',
     component: () => import('../views/Exercise-07.vue')
+    },
+    {
+    path: '/node',
+    name: 'node',
+    component: () => import('../views/node.vue')
     }
   ]
 })

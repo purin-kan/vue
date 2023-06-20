@@ -82,6 +82,14 @@ const webpage = ref(props.page)
 const props = defineProps({
     page: Number
 })
+
+const bigFunctions = {
+    varA: 'name',
+    searchA: (fname) => {
+        return 'xxxx'
+    }
+}
+
 const search = () => {
     const url = `https://api.themoviedb.org/3/search/movie?query=${searchTerm.value}&api_key=7c13e8a9302bd189c9017bb61e799251&page=${page}`
     axios.get(url)
