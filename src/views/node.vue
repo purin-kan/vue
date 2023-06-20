@@ -1,6 +1,14 @@
 <template>
     <div>
 
+        <input type="text" class="form-control mt-3" v-model="name" placeholder="name">
+        <input type="text" class="form-control mt-3 mb-3" v-model="price" placeholder="price">
+        <button class="btn btn-primary mb-3" @click="post()">post</button> <br />
+
+        <input type="text" class="form-control mt-3" v-model="id" placeholder="id condition">
+        <button class="btn btn-primary mb-3 mt-3" @click="update()">update</button> <br />
+
+
         {{ text }}
 
     </div>
@@ -10,7 +18,7 @@
 import { ref } from 'vue'
 import axios from 'axios';
 
-const text = ref('pur')
+const text = ref('default text')
 
 // axios.get('http://localhost:3000')
 //     .then((response) => {
@@ -42,13 +50,30 @@ const text = ref('pur')
 //         text.value = response.data
 //     })
 
-axios.get('http://localhost:3000/mysql')
-    .then((response) => {
-        console.log(response);
-        text.value = response.data
-    })
+// axios.get('http://localhost:3000/mysql')
+//     .then((response) => {
+//         // console.log(response.data);
+//         text.value = response.data
+//     })
 
 
+//receiving data from input fields
+const name = ref()
+const price = ref()
+//insert into databases
+const post = async () => {
+    let { res } = await axios.post('http://localhost:3000/post-example', { name: name.value, price: price.value })
+    console.log(res, 'insert into');
+    text.value = res
+}
 
+
+//update value
+const id = ref()
+const update = async () => {
+    const { res } = await axios.put('http://localhost:3000/update', { name: name.value, price: price.value, id: id.value })
+    console.log(res);
+    text.value = res
+}
 
 </script>
