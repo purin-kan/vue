@@ -7,7 +7,9 @@
 
         <input type="text" class="form-control mt-3" v-model="id" placeholder="id condition">
         <button class="btn btn-primary mb-3 mt-3" @click="update()">update</button> <br />
-
+        
+        <input type="text" class="form-control mt-3" v-model="table" placeholder="table">
+        <button class="btn btn-primary mb-3 mt-3" @click="select()">select</button> <br />
 
         {{ text }}
 
@@ -74,6 +76,15 @@ const update = async () => {
     const { res } = await axios.put('http://localhost:3000/update', { name: name.value, price: price.value, id: id.value })
     console.log(res);
     text.value = res
+}
+
+//select values
+const table = ref()
+const select = async () => {
+    const  res  = await axios.get('http://localhost:3000/select', {params:{ table: table.value}})
+    console.log(res);
+    text.value = res.data
+
 }
 
 </script>
