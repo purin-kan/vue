@@ -68,6 +68,11 @@ const router = createRouter({
     path: '/node',
     name: 'node',
     component: () => import('../views/node.vue')
+    },
+    {
+    path: '/image_generation',
+    name: 'image_generation',
+    component: () => import('../views/image_generation.vue')
     }
   ]
 })
