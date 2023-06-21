@@ -84,7 +84,10 @@ const select = async () => {
     const  res  = await axios.get('http://localhost:3000/select', {params:{ table: table.value}})
     console.log(res);
     text.value = res.data
+}               
 
-}
+
+
+
 
 </script>
