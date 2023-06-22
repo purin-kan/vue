@@ -17,6 +17,7 @@ import HelloWorld from './components/HelloWorld.vue'
     <RouterLink to="/Exercise-07">Exercise-07</RouterLink>
     <RouterLink to="/node">node</RouterLink>
     <RouterLink to="/image_generation">Image Generation</RouterLink>
+    <RouterLink to="/mongodb">MongoDB</RouterLink>
   </nav>
 
   <RouterView />

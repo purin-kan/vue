@@ -73,6 +73,11 @@ const router = createRouter({
     path: '/image_generation',
     name: 'image_generation',
     component: () => import('../views/image_generation.vue')
+    },
+    {
+    path: '/mongodb',
+    name: 'mongodb',
+    component: () => import('../views/mongodb.vue')
     }
   ]
 })
