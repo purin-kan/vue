@@ -1,23 +1,24 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import HelloWorld from './components/HelloWorld.vue'
 </script>
 
 <template>
   <nav>
-    <RouterLink to="/">Home</RouterLink>
-    <RouterLink to="/about">About</RouterLink>
-    <RouterLink to="/project">Project</RouterLink>
-    <RouterLink to="/Exercise-01">Exercise-01</RouterLink>
-    <RouterLink to="/Exercise-02">Exercise-02</RouterLink>
-    <RouterLink to="/Exercise-03">Exercise-03</RouterLink>
-    <RouterLink to="/Exercise-04">Exercise-04</RouterLink>
-    <RouterLink to="/Exercise-05">Exercise-05</RouterLink>
-    <RouterLink to="/api">api</RouterLink>
-    <RouterLink to="/Exercise-07">Exercise-07</RouterLink>
-    <RouterLink to="/node">node</RouterLink>
-    <RouterLink to="/image_generation">Image Generation</RouterLink>
-    <RouterLink to="/mongodb">MongoDB</RouterLink>
+    <RouterLink class="text-decoration-none" to="/">Home</RouterLink>
+    <RouterLink class="text-decoration-none" to="/about">About</RouterLink>
+    <RouterLink class="text-decoration-none" to="/project">Project</RouterLink>
+    <RouterLink class="text-decoration-none" to="/Exercise-01">Exercise-01</RouterLink>
+    <RouterLink class="text-decoration-none" to="/Exercise-02">Exercise-02</RouterLink>
+    <RouterLink class="text-decoration-none" to="/Exercise-03">Exercise-03</RouterLink>
+    <RouterLink class="text-decoration-none" to="/Exercise-04">Exercise-04</RouterLink>
+    <RouterLink class="text-decoration-none" to="/Exercise-05">Exercise-05</RouterLink>
+    <RouterLink class="text-decoration-none" to="/api">api</RouterLink>
+    <RouterLink class="text-decoration-none" to="/Exercise-07">Exercise-07</RouterLink>
+    <RouterLink class="text-decoration-none" to="/node">node (sql)</RouterLink>
+    <RouterLink class="text-decoration-none" to="/image_generation">Image Generation</RouterLink>
+    <RouterLink class="text-decoration-none" to="/mongodb">MongoDB</RouterLink>
+    <RouterLink class="text-decoration-none" to="/fileupload">File Upload</RouterLink>
+    <RouterLink class="text-decoration-none" to="/awsrevision">aws test</RouterLink>
   </nav>
 
   <RouterView />

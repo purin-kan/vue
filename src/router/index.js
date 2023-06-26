@@ -78,6 +78,16 @@ const router = createRouter({
     path: '/mongodb',
     name: 'mongodb',
     component: () => import('../views/mongodb.vue')
+    },
+    {
+    path: '/fileupload',
+    name: 'fileupload',
+    component: () => import('../views/file-upload.vue')
+    },
+    {
+    path: '/awsrevision',
+    name: 'awsrevision',
+    component: () => import('../views/aws-revision.vue')
     }
   ]
 })
