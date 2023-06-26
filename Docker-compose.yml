@@ -1,8 +1,9 @@
 services:
   vue:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
+    image: purinkk/vue-project-client:client
     ports:
       - 3003:8080
     networks:
