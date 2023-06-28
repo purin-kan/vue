@@ -1,15 +1,19 @@
+version: '3'
+
 services:
-  vue:
+  vueapp:
+    container_name: vue-project-client-side
     # build:
     #   context: .
     #   dockerfile: Dockerfile
-    image: purinkk/vue-project-client:client
-    ports:
-      - 3003:8080
+    image: purinkk/vue-project-client
     networks:
-      - node-app
+      - client
+    ports:
+      - "8080:8080"
+
 
 networks:
-  node-app:
+  client:
     name: node-server
     driver: bridge
