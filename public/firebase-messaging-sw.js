@@ -1,3 +1,6 @@
+//send test notifications from
+//https://console.firebase.google.com/u/0/project/beneat-intern/notification/compose
+
 self.importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js')
 self.importScripts('https://www.gstatic.com/firebasejs/9.23.0/firebase-messaging-compat.js')
 /*

@@ -232,6 +232,9 @@ const del = (deleteitem) => {
 
 ///////////////////////////////////////////////////////////
 
+// # send test notifications from
+//https://console.firebase.google.com/u/0/project/beneat-intern/notification/compose
+
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import 'firebase/messaging';
 
