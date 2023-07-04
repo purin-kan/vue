@@ -47,8 +47,8 @@ const app = initializeApp(firebaseConfig);
 const provider = new GoogleAuthProvider();
 
 import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
-import { useRouter } from "vue-router";
-const router = useRouter();
+// import { useRouter } from "vue-router";
+// const router = useRouter();
 
 const auth = getAuth(app);
 const login = () => {
@@ -57,9 +57,11 @@ const login = () => {
       // This gives you a Google Access Token. You can use it to access the Google API.
       const credential = GoogleAuthProvider.credentialFromResult(result);
       const token = credential.accessToken;
+      console.log('sign in token: ', + token);
       // The signed-in user info.
       const user = result.user;
       // IdP data available using getAdditionalUserInfo(result)
+      console.log('sign in user: ', + user);
       // ...
       console.log(result)
       console.log('logged in')
@@ -67,11 +69,15 @@ const login = () => {
     }).catch((error) => {
       // Handle Errors here.
       const errorCode = error.code;
+      console.log(errorCode);
       const errorMessage = error.message;
+      console.log(errorMessage);
       // The email of the user's account used.
       const email = error.customData.email;
+      console.log(email);
       // The AuthCredential type that was used.
       const credential = GoogleAuthProvider.credentialFromError(error);
+      console.log(credential);
       // ...
     });
 }
@@ -213,10 +219,8 @@ const del = (deleteitem) => {
 
 ///////////////////////////////////////////////////////////
 
-
 import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import 'firebase/messaging';
-
 
 let messaging = null
 
