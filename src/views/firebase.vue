@@ -24,7 +24,7 @@ import { ref as vueRef } from 'vue'
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
+// import { getAnalytics } from "firebase/analytics";
 
 
 // Your web app's Firebase configuration
@@ -213,32 +213,72 @@ const del = (deleteitem) => {
 
 ///////////////////////////////////////////////////////////
 
-import { getMessaging, getToken } from "firebase/messaging";
+
+import { getMessaging, onMessage, getToken } from "firebase/messaging";
+import 'firebase/messaging';
+
+
+let messaging = null
+
+const getCloudMessaging = () => {
+  messaging = getMessaging(app)
+  onMessage(messaging, (payload) => {
+    console.log(
+      '[firebase-foreground] Received foreground message ',
+      payload
+    )
+
+    let notificationOptions = {}
+
+    if ('title' in payload.notification) {
+      notificationOptions['title'] = payload.notification.title
+    }
+    if ('body' in payload.notification) {
+      notificationOptions['body'] = payload.notification.body
+    }
+    if ('icon' in payload.notification) {
+      notificationOptions['icon'] = payload.notification.icon
+    }
+    if ('image' in payload.notification) {
+      notificationOptions['image'] = payload.notification.image
+    }
+    console.log('notificationOptions', notificationOptions)
+  })
+  this.getUserToken()
+
+}
+
 
 const requestPermission = () => {
   console.log('Requesting permission...');
-  Notification.requestPermission().then((permission) => {
-    if (permission === 'granted') {
-      console.log('Notification permission granted.');
-    }
-  })
-}
+  Notification.requestPermission()
+    .then((permission) => {
+      if (permission === 'granted') {
+        console.log('Notification permission granted.');
+        getUserToken(); // Call getToken() after permission is granted
+      } else {
+        console.log('Notification permission denied.');
+      }
+    })
+    .catch((error) => {
+      console.error('Error requesting permission:', error);
+    });
+};
 
-const messaging = getMessaging();
-getToken(messaging, { vapidKey: 'BMb48g5MkfL0R5iiS9hUBZDS6LG5_baxXsAb_zIMoO4HMfofgI9kUuuaNbTwhnXU5smIvdonSjezJR4lgTL6f7U' }).then((currentToken) => {
-  if (currentToken) {
-    console.log('got token');
-    // Send the token to your server and update the UI if necessary
-    // ...
-  } else {
-    // Show permission request UI
-    console.log('No registration token available. Request permission to generate one.');
-    // ...
-  }
-}).catch((err) => {
-  console.log('An error occurred while retrieving token. ', err);
-  // ...
-});
+const getUserToken = () => {
+  getToken(messaging, { vapidKey: 'BMb48g5MkfL0R5iiS9hUBZDS6LG5_baxXsAb_zIMoO4HMfofgI9kUuuaNbTwhnXU5smIvdonSjezJR4lgTL6f7U' })
+    .then((currentToken) => {
+      if (currentToken) {
+        console.log('Got token:', currentToken);
+        // Send the token to your server and handle it as needed
+      } else {
+        console.log('No registration token available.');
+      }
+    })
+    .catch((error) => {
+      console.error('Error getting token:', error);
+    });
+};
 
 
 
