@@ -46,8 +46,12 @@ self.addEventListener('notificationclick', (event) => {
 const messaging = self.firebase.messaging()
 messaging.onBackgroundMessage(function (payload) {
   console.log('Message onBackgroundMessage received.', payload)
-  const title = payload.notification.title
-  const options = {
+
+  //currently no known way to send variables to firebase.vue
+  const notificationContents = {
+    title: payload.notification.title,
     body: payload.notification.body,
+    image: payload.notification.image
   }
 })
+

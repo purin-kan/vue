@@ -13,18 +13,31 @@
     <input class="form-control" type="file" id="formFile" ref="file" @change="handleFileInputChange">
     <button @click="uploadFile()" class="btn btn-primary mt-2">Upload</button>
   </div>
-  items:
-  <li v-for="item in items" :key="item.name">
-    {{ item.name }} <button class="btn btn-outline-danger" @click="del(item.name)">delete</button>
-  </li>
+  <div>
+    items:
+    <li v-for="item in items" :key="item.name">
+      {{ item.name }} <button class="btn btn-outline-danger" @click="del(item.name)">delete</button>
+    </li>
+  </div>
+  <div v-if="showNotification">
+    <p class="mt-5">Notification:</p>
+    <div class="card" style="padding: 3%;">
+      <h3>{{ notificationOptions.title }}</h3>
+      {{ notificationOptions.body }} <br>
+      <img class="mt-4 img-fuild" :src="notificationOptions.image">
+    </div>
+  </div>
 </template>
 
 <script setup>
-import { ref as vueRef } from 'vue'
-
-// Import the functions you need from the SDKs you need
+import { ref as vueRef, onMounted } from 'vue'
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
+
+onMounted(() => {
+  //use to initilize
+})
+  
 
 
 // Your web app's Firebase configuration
@@ -223,6 +236,8 @@ import { getMessaging, onMessage, getToken } from "firebase/messaging";
 import 'firebase/messaging';
 
 let messaging = null
+let notificationOptions = vueRef({})
+let showNotification = vueRef(false)
 
 const getCloudMessaging = () => {
   messaging = getMessaging(app)
@@ -231,21 +246,25 @@ const getCloudMessaging = () => {
   onMessage(messaging, (payload) => {
     console.log('[firebase-foreground] Received foreground message ', payload)
 
-    let notificationOptions = {}
+    //this receives data from the notification received
+    //does not receive data from the source of the notification
+    notificationOptions.value = vueRef({})
 
     if ('title' in payload.notification) {
-      notificationOptions['title'] = payload.notification.title
+      notificationOptions.value['title'] = payload.notification.title
     }
     if ('body' in payload.notification) {
-      notificationOptions['body'] = payload.notification.body
+      notificationOptions.value['body'] = payload.notification.body
     }
     if ('icon' in payload.notification) {
-      notificationOptions['icon'] = payload.notification.icon
+      notificationOptions.value['icon'] = payload.notification.icon
     }
     if ('image' in payload.notification) {
-      notificationOptions['image'] = payload.notification.image
+      notificationOptions.value['image'] = payload.notification.image
     }
     console.log('notificationOptions', notificationOptions)
+    showNotification.value = true
+
   })
 }
 
