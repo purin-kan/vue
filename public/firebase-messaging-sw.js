@@ -52,6 +52,4 @@ messaging.onBackgroundMessage(function (payload) {
     body: payload.notification.body,
     icon: '/images/beneat-chat-active-favicon.png'
   }
-
-  return self.registration.showNotification(title, options)
 })
