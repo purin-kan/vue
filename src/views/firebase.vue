@@ -1,0 +1,245 @@
+<template>
+  <h1>Authentication</h1>
+  <button class="btn btn-info" @click="login()">sign-in</button> <br>
+  <button class="btn btn-info mt-3" @click="logout()">sign-out</button> <br>
+  <button class="btn btn-success mt-3" @click="add_item()">add item (firestore)</button> <br>
+  <button class="btn btn-success mt-3" @click="read_item()">read data (firestore)</button> <br>
+  <button class="btn btn-danger mt-3" @click="delete_item()">delete item (firestore)</button> <br>
+  <button class="btn btn-danger mt-3" @click="delete_field()">delete field (firestore)</button> <br>
+  <button class="btn btn-info mt-3" @click="list_items()">list items (storage)</button> <br>
+  <button class="btn btn-primary mt-3" @click="requestPermission()"> request permission (cloud message)</button> <br>
+  <div class="mb-3 mt-3">
+    <label for="formFile" class="form-label">Upload file to firebase storage</label>
+    <input class="form-control" type="file" id="formFile" ref="file" @change="handleFileInputChange">
+    <button @click="uploadFile()" class="btn btn-primary mt-2">Upload</button>
+  </div>
+  items:
+  <li v-for="item in items" :key="item.name">
+    {{ item.name }} <button class="btn btn-outline-danger" @click="del(item.name)">delete</button>
+  </li>
+</template>
+
+<script setup>
+import { ref as vueRef } from 'vue'
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBx7AJ08X-WM3Vg8psArxR6Lpu1H8d6C6Y",
+  authDomain: "beneat-intern.firebaseapp.com",
+  projectId: "beneat-intern",
+  storageBucket: "beneat-intern.appspot.com",
+  messagingSenderId: "41116895687",
+  appId: "1:41116895687:web:e0852bbf9f7b0c3b7f31e2",
+  measurementId: "G-MM04HJGRN6"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+// const analytics = getAnalytics(app);
+
+////////////////////////////////////////////////////////////////
+const provider = new GoogleAuthProvider();
+
+import { getAuth, signInWithPopup, GoogleAuthProvider, signOut } from "firebase/auth";
+import { useRouter } from "vue-router";
+const router = useRouter();
+
+const auth = getAuth(app);
+const login = () => {
+  signInWithPopup(auth, provider)
+    .then((result) => {
+      // This gives you a Google Access Token. You can use it to access the Google API.
+      const credential = GoogleAuthProvider.credentialFromResult(result);
+      const token = credential.accessToken;
+      // The signed-in user info.
+      const user = result.user;
+      // IdP data available using getAdditionalUserInfo(result)
+      // ...
+      console.log(result)
+      console.log('logged in')
+      // router.push('/about') //go to other page after sucessfull login
+    }).catch((error) => {
+      // Handle Errors here.
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      // The email of the user's account used.
+      const email = error.customData.email;
+      // The AuthCredential type that was used.
+      const credential = GoogleAuthProvider.credentialFromError(error);
+      // ...
+    });
+}
+
+const logout = () => {
+  const auth = getAuth();
+  signOut(auth).then(() => {
+    console.log('logged out')
+    // Sign-out successful.
+  }).catch((error) => {
+    console.log(error)
+    // An error happened.
+  });
+}
+
+////////////////////////////////////////////////////////////////
+
+import { getFirestore } from "firebase/firestore";
+import { doc, setDoc, getDoc, deleteDoc, deleteField, updateDoc } from "firebase/firestore";
+
+
+// Initialize Cloud Firestore and get a reference to the service
+const db = getFirestore(app);
+
+const add_item = async () => {
+  console.log('adding item')
+  // Add a new document in collection "cities"
+  await setDoc(doc(db, "cities", "LA"), {
+    name: "Los Angeles",
+    state: "CA",
+    country: "USA"
+  });
+}
+
+//read from "database", "collection"
+const docRef = doc(db, "cities", "LA");
+const read_item = async () => {
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data());
+  } else {
+    // docSnap.data() will be undefined in this case
+    console.log("No such document!");
+  }
+}
+
+const delete_item = async () => {
+  console.log('deleting item')
+  await deleteDoc(doc(db, "cities", "LA"));
+}
+
+
+const cityRef = doc(db, 'cities', 'LA');
+
+const delete_field = async () => {
+  // Remove the 'capital' field from the document
+  await updateDoc(cityRef, {
+    //field to be deleted
+    country: deleteField()
+  });
+}
+
+////////////////////////////////////////////////////////////////
+import { getStorage, ref as firebaseRef, uploadBytes, getDownloadURL, listAll, deleteObject } from "firebase/storage";
+
+const file = vueRef()
+
+function handleFileInputChange(event) {
+  // file.value = event.target.files[0];
+  // console.log(file.value)
+}
+
+const uploadFile = async () => {
+  const selectedfile = file.value.files[0];
+  if (!selectedfile) {
+    console.error("No file selected.");
+    return;
+  }
+
+  const storage = getStorage();
+  const storageRef = firebaseRef(storage, "uploads/" + selectedfile.name);
+
+  try {
+    //upload file
+    const snapshot = await uploadBytes(storageRef, selectedfile);
+    console.log("File uploaded successfully.", snapshot);
+
+    // Get the download URL
+    const downloadURL = await getDownloadURL(snapshot.ref);
+    console.log("Download URL:", downloadURL);
+    // window.open(downloadURL)
+    // automatically open the download URL in a new tab when upload is successful
+
+    list_items()
+  } catch (error) {
+    console.error("Error uploading file:", error);
+    // Handle the upload error
+  }
+}
+
+
+const items = vueRef([])
+const list_items = () => {
+  items.value = []
+  //list
+  const storage = getStorage();
+  const listRef = firebaseRef(storage, 'uploads');
+
+  // Find all the prefixes and items.
+  listAll(listRef)
+    .then((res) => {
+      res.prefixes.forEach((folderRef) => {
+        listAll(folderRef)
+        // console.log('folerRef (not pushed to array): ', folderRef)
+      });
+      res.items.forEach((itemRef) => {
+        // console.log('itemRef: ', itemRef)
+        items.value.push(itemRef)
+      });
+    }).catch((error) => {
+      console.log(error)
+    });
+}
+
+const del = (deleteitem) => {
+  console.log(deleteitem);
+  // Create a reference to the file to delete
+  const storage = getStorage();
+  const desertRef = firebaseRef(storage, 'uploads/' + deleteitem);
+
+  // Delete the file
+  deleteObject(desertRef).then(() => {
+    // File deleted successfully
+  }).catch((error) => {
+    console.log(error)
+  });
+  list_items()
+}
+
+///////////////////////////////////////////////////////////
+
+import { getMessaging, getToken } from "firebase/messaging";
+
+const requestPermission = () => {
+  console.log('Requesting permission...');
+  Notification.requestPermission().then((permission) => {
+    if (permission === 'granted') {
+      console.log('Notification permission granted.');
+    }
+  })
+}
+
+const messaging = getMessaging();
+getToken(messaging, { vapidKey: 'BMb48g5MkfL0R5iiS9hUBZDS6LG5_baxXsAb_zIMoO4HMfofgI9kUuuaNbTwhnXU5smIvdonSjezJR4lgTL6f7U' }).then((currentToken) => {
+  if (currentToken) {
+    console.log('got token');
+    // Send the token to your server and update the UI if necessary
+    // ...
+  } else {
+    // Show permission request UI
+    console.log('No registration token available. Request permission to generate one.');
+    // ...
+  }
+}).catch((err) => {
+  console.log('An error occurred while retrieving token. ', err);
+  // ...
+});
+
+
+
+</script>

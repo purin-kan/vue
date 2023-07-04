@@ -88,6 +88,11 @@ const router = createRouter({
     path: '/awsrevision',
     name: 'awsrevision',
     component: () => import('../views/aws-revision.vue')
+    },
+    {
+    path: '/firebase',
+    name: 'firebase',
+    component: () => import('../views/firebase.vue')
     }
   ]
 })

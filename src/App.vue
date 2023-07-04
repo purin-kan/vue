@@ -19,6 +19,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <RouterLink class="text-decoration-none" to="/mongodb">MongoDB</RouterLink>
     <RouterLink class="text-decoration-none" to="/fileupload">File Upload</RouterLink>
     <RouterLink class="text-decoration-none" to="/awsrevision">aws test</RouterLink>
+    <RouterLink class="text-decoration-none" to="/firebase">Firebase</RouterLink>
   </nav>
 
   <RouterView />
