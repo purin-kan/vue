@@ -7,7 +7,7 @@
   <button class="btn btn-danger mt-3" @click="delete_item()">delete item (firestore)</button> <br>
   <button class="btn btn-danger mt-3" @click="delete_field()">delete field (firestore)</button> <br>
   <button class="btn btn-info mt-3" @click="list_items()">list items (storage)</button> <br>
-  <button class="btn btn-primary mt-3" @click="requestPermission()"> request permission (cloud message)</button> <br>
+  <button class="btn btn-primary mt-3" @click="getCloudMessaging()"> request permission (cloud message)</button> <br>
   <div class="mb-3 mt-3">
     <label for="formFile" class="form-label">Upload file to firebase storage</label>
     <input class="form-control" type="file" id="formFile" ref="file" @change="handleFileInputChange">
@@ -222,11 +222,10 @@ let messaging = null
 
 const getCloudMessaging = () => {
   messaging = getMessaging(app)
+  requestPermission()
+
   onMessage(messaging, (payload) => {
-    console.log(
-      '[firebase-foreground] Received foreground message ',
-      payload
-    )
+    console.log('[firebase-foreground] Received foreground message ', payload)
 
     let notificationOptions = {}
 
@@ -244,8 +243,6 @@ const getCloudMessaging = () => {
     }
     console.log('notificationOptions', notificationOptions)
   })
-  this.getUserToken()
-
 }
 
 
