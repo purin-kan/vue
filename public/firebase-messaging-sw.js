@@ -47,7 +47,7 @@ self.addEventListener('notificationclick', (event) => {
 
 // Retrieve an instance of Firebase Messaging so that it can handle background messages.
 const messaging = self.firebase.messaging()
-messaging.onBackgroundMessage(function (payload) {
+messaging.onBackgroundMessage((payload) => {
   console.log('Message onBackgroundMessage received.', payload)
 
   //currently no known way to send variables to firebase.vue
@@ -56,5 +56,7 @@ messaging.onBackgroundMessage(function (payload) {
     body: payload.notification.body,
     image: payload.notification.image
   }
+  //send to frontend
+  const channel = new BroadcastChannel('sw-messages');
+  channel.postMessage(notificationContents);
 })
-

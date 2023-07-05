@@ -35,9 +35,21 @@ import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
 
 onMounted(() => {
-  //use to initilize
+  //use to initilize 
+
+  //receive notification data afrom service worker
+  const channel = new window.BroadcastChannel("sw-messages");
+  channel.addEventListener('message', (event) => {
+    notificationOptions.value = {
+      title: event.data.title,
+      body: event.data.body,
+      image: event.data.image
+    }
+    console.log('filled', notificationOptions); 
+    showNotification.value = true
+  });
 })
-  
+
 
 
 // Your web app's Firebase configuration
@@ -258,9 +270,6 @@ const getCloudMessaging = () => {
     }
     if ('body' in payload.notification) {
       notificationOptions.value['body'] = payload.notification.body
-    }
-    if ('icon' in payload.notification) {
-      notificationOptions.value['icon'] = payload.notification.icon
     }
     if ('image' in payload.notification) {
       notificationOptions.value['image'] = payload.notification.image
