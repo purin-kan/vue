@@ -93,6 +93,11 @@ const router = createRouter({
     path: '/firebase',
     name: 'firebase',
     component: () => import('../views/firebase.vue')
+    },
+    {
+    path: '/neurallove',
+    name: 'neurallove',
+    component: () => import('../views/neural-love.vue')
     }
   ]
 })
